@@ -3,9 +3,7 @@ class TasksController < ApplicationController
   before_action :correct_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @task = current_user.tasks.build  # form_with 用
-    @pagy, @tasks = pagy(current_user.tasks.order(id: :desc))
-
+    @tasks = current_user.tasks
   end
 
   def new
@@ -14,7 +12,7 @@ class TasksController < ApplicationController
 
   def create
     @task = current_user.tasks.build(task_params)
-
+    
     if @task.save
       flash[:success] = 'Task が正常に投稿されました'
       redirect_to @task
@@ -36,10 +34,8 @@ class TasksController < ApplicationController
      
   def destroy
     @task.destroy
-
     flash[:success] = 'Task は正常に削除されました'
     redirect_to tasks_url
-    
   end
   
   private
